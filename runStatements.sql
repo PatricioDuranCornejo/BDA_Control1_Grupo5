@@ -139,14 +139,14 @@ FROM ranking
 WHERE posicion = 1
 ORDER BY especie, medicamento;
 
---6. Total recaudado por sucursal por mes desde hace 12 meses hasta hoy, incluyendo ambos límites.
+--6. Total recaudado por sucursal por mes en los últimos 12 meses.
 SELECT s.nombre                          AS sucursal,
        TO_CHAR(p.fecha_pago, 'YYYY-MM') AS mes,
        SUM(p.monto)                      AS total_recaudado
 FROM pago p
 JOIN atencion a ON a.id = p.id_atencion
 JOIN sucursal s ON s.id = a.id_sucursal
-WHERE p.fecha_pago >= (CURRENT_DATE - INTERVAL '12 months')::date
+WHERE p.fecha_pago >= (CURRENT_DATE - INTERVAL '11 months')::date
   AND p.fecha_pago <= CURRENT_DATE
 GROUP BY s.id, s.nombre, TO_CHAR(p.fecha_pago, 'YYYY-MM')
 ORDER BY mes, sucursal;
